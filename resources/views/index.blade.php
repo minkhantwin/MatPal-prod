@@ -9,7 +9,8 @@
 
                 <div class="mb-3">
                     <label for="price" class="form-label">Price</label>
-                    <input type="number" class="form-control" id="price" placeholder="0">
+                    <input type="number" class="form-control mb-2" id="price" placeholder="0">
+                    <div id="readable-price"></div>
                 </div>
 
                 <div class="mb-3">
@@ -44,12 +45,13 @@
                             <label for="amount">Amount</label>
                             <input id="amount" class="form-control text-center" disabled type="number" value="0" name="amount">
                         </div>
+                        <div id="readable-amount"></div>
                     </div>
                 </div>
                 
                 <div class="mb-5" id="list-container">
-                    <label for="">Records</label>
-                    
+                    <label for="">Records</label><br>
+                    <div id="record-count" class="mb-2" data-rc = "0">Count - 0</div>
                     
                 </div>
 

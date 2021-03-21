@@ -44,6 +44,7 @@ class RegisterController extends Controller
           'name' => ['required', 'string', 'max:255'],
           'email' => ['required', 'string', 'email', 'max:255'],
           'password' => ['required', 'string', 'min:8', 'confirmed'],
+          'flag' => ['required']
        ]);
     }
     protected function register(Request $request) {

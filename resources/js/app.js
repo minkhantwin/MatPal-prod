@@ -38,8 +38,12 @@ $(function() {
     $('#price').on('input', function(e) {
         var price = $(this).val();
         var total = parseFloat( $('#totalw').val() );
-        $('#amount').val( Math.floor( (price / 20) * total ));
-    
+        var amt = Math.floor( (price / 20) * total );
+        $('#amount').val( amt );
+        $('#readable-amount').text(humanReadAmount(amt))
+        
+        $('#readable-price').text(humanReadAmount(price));
+
     })
 
     $('#lb-back').on('click',function(e) {
@@ -80,13 +84,16 @@ $(function() {
         var item = "<div data-wgh=\""+wgh+"\" class=\"row p-1 mx-1 mb-3 shadow\" id=\"item"+cnt+"\"><div class=\"col-10\">"+wgh+"</div> <div class=\"col p-0 ml-3\"><img class=\"remove-item\" style=\"width: 15px;height: auto;\" src=\"icons/cancel.png\"/>    </div></div>";
         $(this).data('cnt',++cnt);
         $('#list-container').append(item);
+
+        // change count
+        countController("add");
         
         calcAmount(wgh,"add")
         
         b.val("00");
         b.text("00");
         f.val("");
-        f.focus();
+
     })
 
     $('#list-container').on('click',function(e) {
@@ -95,8 +102,9 @@ $(function() {
         {
             var wgh = $( e.target.parentNode.parentNode ).data('wgh') ;
     
-            calcAmount(wgh,"remove")
             e.target.parentNode.parentNode.parentNode.removeChild(e.target.parentNode.parentNode);
+            calcAmount(wgh,"remove");
+            countController("remove");
 
         }
         
@@ -113,8 +121,10 @@ $(function() {
     
             // add total amount
             var price = $('#price').val();
-            $('#amount').val( Math.floor( (price / 20) * total ) );
-        
+            var amt = Math.floor( (price / 20) * total );
+            $('#amount').val( amt );
+            $('#readable-amount').text(humanReadAmount(amt))
+            
         }
         else if(flag == "remove")
         {
@@ -124,9 +134,55 @@ $(function() {
       
               // add total amount
               var price = $('#price').val();
-              $('#amount').val( Math.floor( (price / 20) * total ));
-          
+              var amt = Math.floor( (price / 20) * total );
+              $('#amount').val( amt );
+              $('#readable-amount').text(humanReadAmount(amt))
             
+        }
+
+    }
+
+    function humanReadAmount(amt)
+    {
+        var text = "";
+        var post = ["ရာ","ထောင်","သောင်း","သိန်း"];
+        
+        var div = 1000; 
+        while ( div <= amt*10 && div <= 1000000) {
+            var result , digit ;
+            
+            if( div == 1000000)
+            {
+                digit = Math.floor( amt / (div/10) );
+                text = digit+post.shift() + ' ' + text;
+            }
+            else {
+                result = amt%div;
+                digit = Math.floor( result / (div/10) );
+                text = digit+post.shift() + ' ' + text;
+            }
+            div = div *10;
+            
+
+        }
+        return text;
+
+
+    }
+
+    function countController(flag)
+    {
+        var dom = $('#record-count');
+        var cnt = parseInt(dom.data('rc'));
+        if(flag == "add")
+        {
+            dom.data('rc' , ++cnt);
+            dom.text('Count - '+ cnt);
+        }
+        else if(flag == "remove")
+        {
+            dom.data('rc' , --cnt);
+            dom.text('Count - '+ cnt);
         }
 
     }
